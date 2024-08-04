@@ -1,0 +1,101 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Padre Studio - Home">
+	<main class="max-h-dvh">
+		<nav id="navbar" class="bg-[#F4E1A8] w-full h-24 fixed top-0 flex flex-row justify-between items-center border border-b-2 border-black z-10">
+			<div class="ml-16">
+				<p class="p-2 text-lg hover:text-[#1B3528] cursor-pointer font-extrabold">PADRE STUDIO</p>
+			</div>
+			<div class="flex flex-row gap-28 p-2 mr-16">
+				<p class="hover:text-[#E5632B] cursor-pointer font-semibold">PROJECTS</p>
+				<p class="hover:text-[#E5632B] cursor-pointer font-semibold">ABOUT</p>
+				<p class="hover:text-[#E5632B] cursor-pointer font-semibold">CONTACTS</p>
+			</div>
+		</nav>
+		<div class="grid grid-cols-[1fr,6rem,1fr] w-full min-h-dvh">
+			<section id="imageContainer" class="bg-[#1B3528] flex justify-center items-center h-full w-full">
+				<figure class="h-full w-full relative">
+					<img id="changingImage" src="./art1.jpg" alt="art1" class="w-full h-full object-cover transition-opacity duration-1000 ease-in-out">
+					<img id="nextImage" src="./art2.jpg" alt="art" class="w-full h-full object-cover absolute top-0 left-0 opacity-0 transition-opacity duration-1000 ease-in-out">
+				</figure>
+			</section>
+			<section class="bg-[#F4E1A8] w-24 flex justify-center items-center">
+				<div class="rotate-90 text-center">
+					<p class="font-semibold">PADRE STUDIO</p>
+					<p class="w-64 font-medium">is an arcitecture and interior design studio</p>
+					<p class="font-light italic">SINCE 2004</p>
+				</div>
+			</section>
+			<section id="imageContainer2" class="bg-[#E5632B] flex justify-center items-center h-full w-full">
+				<figure class="w-full h-full relative">
+					<img id="changingImage2" src="./art2.jpg" alt="art2" class="w-full h-full object-cover transition-opacity duration-1000 ease-in-out">
+					<img id="nextImage2" src="./art1.jpg" alt="art" class="w-full h-full object-cover absolute top-0 left-0 opacity-0 transition-opacity duration-1000 ease-in-out">
+				</figure>
+			</section>
+		</div>
+		<script type="text/javascript">
+		document.addEventListener('DOMContentLoaded', function() {
+ 			const navbar = document.getElementById('navbar')
+
+ 			document.addEventListener('mousemove', function(e) {
+    			if (e.clientY < 100) { // Adjust the value 100 based on your navbar's height
+					navbar.classList.remove('translate-y-[-100%]');
+					navbar.classList.add('translate-y-0');
+					navbar.classList.add('transition-transform');
+    			} else {
+      				navbar.classList.remove('translate-y-0');
+					navbar.classList.add('translate-y-[-100%]');
+					navbar.classList.add('transition-transform');
+    			}
+ 			});
+			 const images = ['./art1.jpg', './art2.jpg',]; // Add all your image paths
+			 const images2 = ['./art2.jpg', './art1.jpg']; // Add all your image paths
+			 let currentIndex = 0;
+			 let intervalId;
+			 
+			const imageElement = document.getElementById('changingImage');
+			const nextImage = document.getElementById('nextImage');
+			const container = document.getElementById('imageContainer');
+			const imageElement2 = document.getElementById('changingImage2');
+			const nextImage2 = document.getElementById('nextImage2');
+			const container2 = document.getElementById('imageContainer2');
+
+			function changeImage() {
+				currentIndex = (currentIndex + 1) % images.length;
+				nextImage.src = images[currentIndex];
+        		nextImage.classList.remove('opacity-0');
+        		imageElement.classList.add('opacity-0');
+				nextImage2.src = images2[currentIndex];
+        		nextImage2.classList.remove('opacity-0');
+        		imageElement2.classList.add('opacity-0');
+				setTimeout(() => {
+					imageElement.src = nextImage.src;
+					imageElement.classList.remove('opacity-0');
+					nextImage.classList.add('opacity-0');
+					imageElement2.src = nextImage2.src;
+					imageElement2.classList.remove('opacity-0');
+					nextImage2.classList.add('opacity-0');
+        		}, 2000); // This should match the duration in the CSS transition
+			}
+
+			function startImageChange() {
+				intervalId = setInterval(changeImage, 5000);
+			}
+
+			function stopImageChange() {
+				clearInterval(intervalId);
+			}
+
+			container.addEventListener('mouseenter', stopImageChange);
+			container.addEventListener('mouseleave', startImageChange);
+			container2.addEventListener('mouseenter', stopImageChange);
+			container2.addEventListener('mouseleave', startImageChange);
+			
+			// Start the image change when the page loads
+			startImageChange();
+		});
+		</script>
+	</main>
+</Layout>
